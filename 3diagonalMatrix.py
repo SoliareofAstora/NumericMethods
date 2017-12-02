@@ -28,6 +28,7 @@ d0.setNumbers(-1, [2, 1, 1, 2, 1, 2, 1, 2])
 
 b = np.array([1, 2, 3, 4, 5, 6, 7, 8, 9])
 
+
 a = np.zeros((9,9))
 
 for x in range(0, 9):
