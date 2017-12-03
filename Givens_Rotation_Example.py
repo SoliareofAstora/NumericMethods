@@ -7,7 +7,7 @@ Created on Sat Dec  2 20:58:06 2017
 import numpy as np
 from diagonal import Diagonal
 from GivensRotation import GivensRotations
-from BackSubstitution import backSubstitutuion
+from BackSubstitution import backSubstitution
 #=Prepare Matrix 9x9=========================
 d1 = Diagonal()
 d1.setNumbers(0, [4, 8, 4, 3, 4, 5, 2, 8, 5])
@@ -35,7 +35,7 @@ for x in range(np.size(source[0])-1):
     b = G.dot(b)
     
 #=Solve rotated matrix with backsubstitution=
-result = backSubstitutuion(source, b,3)
+result = backSubstitution(source, b,3)
 print("\nGivens & back substitution")
 for x in range(9):
     print("x%d"%(x+1),"=%f"%result[x])

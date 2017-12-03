@@ -7,7 +7,7 @@ Created on Sun Dec  3 15:14:14 2017
 import numpy as np
 from diagonal import Diagonal
 from GivensRotation import GivensRotations
-from BackSubstitution import backSubstitutuion
+from BackSubstitution import backSubstitution
 #=Prepare Matrix 9x9=========================
 d1 = Diagonal()
 d1.setNumbers(0, [4, 8, 4, 3, 4, 5, 2, 8, 5])
@@ -46,8 +46,8 @@ for x in range(np.size(a[0])-1):
     b = G.dot(b)
     u = G.dot(u)
 
-z=backSubstitutuion(a,b,3)
-q=backSubstitutuion(a,u,3)
+z=backSubstitution(a,b,3)
+q=backSubstitution(a,u,3)
 solve =z- ((v.dot(z)) * q)/(1+v.dot(q))
 
 print("\nShermanMorrison, Givens & back substitution")
