@@ -4,27 +4,12 @@ Created on Sat Dec  2 20:58:06 2017
 
 @author: SoliareOfAstora
 """
-from diagonal import Diagonal
+import math 
 import numpy as np
-import math
+from diagonal import Diagonal
+from GivensRotation import GivensRotations
 
-def distance(p0, p1):
-    return math.sqrt((p0)**2 + (p1)**2)
 
-def Givens(source,x):
-    (rows, cols)=np.shape(source)
-    
-    r = distance(source[x,x],source[x+1,x])
-    c = source[x,x] / r
-    s = -source[x+1,x] / r
-    
-    G=np.identity(9)
-    G[x, x] = c
-    G[x + 1, x + 1] = c
-    G[x + 1, x] = s
-    G[x, x + 1] = -s
-
-    return G
 
 #=====Prepare Matrix=========================
 d1 = Diagonal()
@@ -51,11 +36,9 @@ for x in range(9):
     
 a = np.copy(source)
 
-
-for x in range(8):
-    G = Givens(a,x)
-    a= G*a
-    b= G.dot(b)
+G = GivensRotations(a)
+a= G.dot(a)
+b= G.dot(b)
 
 CorrectSolve = np.linalg.solve(a,b)   
 print("Correct solve")
