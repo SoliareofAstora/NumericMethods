@@ -21,16 +21,15 @@ b = np.array([[-0.915304,0.663939,-0.985599,-1.14813,0.657107],
               [0.145357,1.01749,-0.278492,-1.28907,-0.452008],
               [0.145357,1.01749,-0.278492,-1.29379,-0.453663]])
     
+
 properSolve=np.zeros((4,5))
 for x in range(0,4):
     properSolve[x,:] = np.linalg.solve(a,b[x])  
 
 
-
 Permutation,Lower,Upper = scipy.linalg.lu(a)
 for x in range(0,4):
     b[x]=b[x].dot(Permutation)
-
 
 Solve=np.zeros((4,5))
 for x in range(0,4):
