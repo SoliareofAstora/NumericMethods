@@ -41,12 +41,32 @@ for x in range(0,4):
 
 z = np.zeros((4,5))
 for x in range(0,4):
+    print("b%d"%(x+1))
     z[x,:] = backSubstitution(Upper,forwardSubstitution(Lower,b[x]),5)
+    for y in range(5):
+        print("x%d"%(y+1),"=%f"%z[x,y])
+        
     
-
+    
+    
 b=np.copy(bsource)
+np.linalg.norm(a)*np.linalg.norm(np.linalg.inv(a))/2
 
 np.linalg.norm(b[0]-b[1])
+A_1dB = backSubstitution(Upper,forwardSubstitution(Lower,b[0]-b[1]),5)
+minwlasna=1/min(np.linalg.eigvals(a))
+
+
+
+
 np.linalg.norm(b[2]-b[3])
 np.linalg.norm(z[0]-z[1])/np.linalg.norm(b[0]-b[1])
 np.linalg.norm(z[2]-z[3])/np.linalg.norm(b[2]-b[3])
+
+(np.linalg.norm(z[0]-z[1])/np.linalg.norm(b[0]-b[1]))*(np.linalg.norm(b[1])/np.linalg.norm(z[1]))
+(np.linalg.norm(z[2]-z[3])/np.linalg.norm(b[2]-b[3]))*(np.linalg.norm(b[3])/np.linalg.norm(z[3]))
+
+
+np.linalg.cond(a)
+
+np.linalg.norm(b[0]-b[1])
