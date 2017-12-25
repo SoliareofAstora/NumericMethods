@@ -10,7 +10,7 @@ from GivensRotation import GivensRotations
 from BackSubstitution import backSubstitution
 #=Prepare Matrix 9x9=========================
 d1 = Diagonal()
-d1.setNumbers(0, [4, 8, 4, 3, 4, 5, 2, 8, 5])
+d1.setNumbers(0, [4, 8, 4, 3, 4, 5, 3, 8, 5])
 d0 = Diagonal()
 d0.setNumbers(-1, [2, 1, 1, 2, 1, 2, 1, 2])
 
