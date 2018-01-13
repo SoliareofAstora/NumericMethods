@@ -5,7 +5,6 @@ Created on Mon Dec 18 17:08:12 2017
 @author: SoliareOfAstora
 """
 import numpy as np
-import math
 
 
 class diagonalArray:
@@ -32,43 +31,41 @@ class diagonalArray:
 
 
 arr = diagonalArray
-temp = np.ones(64)
 output = np.ones(64)
-i = 0
 while True:
 
-    temp = np.copy(output)
-    diagonalArray.calculate(arr, temp, output)
+    inp = np.copy(output)
+    diagonalArray.calculate(arr, inp, output)
     output /= np.linalg.norm(output)
 
-    if np.linalg.norm(output - temp) < pow(10, -7):
+    if np.linalg.norm(output - inp) < pow(10, -7):
         break
 
-diagonalArray.calculate(arr, temp, output)
-np.linalg.norm(output)
+diagonalArray.calculate(arr, inp, output)
+# ============================================================
+np.linalg.norm(output) # Out[4]: 13.97516637314112
+output # Wektor własny
+# po obliczeniu powyższych można przejśc do poszukiwania drugiej co do wielkości wartości własnej
+# ============================================================
+output /= np.linalg.norm(output)
+x = np.copy(output)
+
+arr = diagonalArray
+output = np.ones(64)
+inp = np.copy(output)
+inp /= np.linalg.norm(inp)
+inp -= x * (x.dot(inp))
+
+while True:
+    inp /= np.linalg.norm(inp)
+    diagonalArray.calculate(arr, inp, output)
+    inp = np.copy(output)
+    inp -= x * (x.dot(inp))
+
+    if np.linalg.norm(output - inp) < pow(10, -7):
+        break
 
 # ============================================================
-arr = diagonalArray
-temp = np.ones(64)
-output = np.ones(64)
-diagonalArray.calculate(arr, temp, output)
-x = np.random.randn(64)
-x -= x.dot(output) * output / np.linalg.norm(output) ** 2
-while True:
-    x -= x.dot(output) * output / np.linalg.norm(output) ** 2
-    temp = np.copy(output)
-    temp -= x*x.dot(temp)
-    diagonalArray.calculate(arr, temp, output)
-    output /= np.linalg.norm(output)
-    temp /= np.linalg.norm(temp)
-    if np.linalg.norm(output - temp) < pow(10, -5):
-        break
-
-diagonalArray.calculate(arr, temp, output)
-np.linalg.norm(output)
-
-
-13.97516637314112
-
-
-13.901095366671019
+np.linalg.norm(output) # Out[6]: 13.900452697733499
+inp # Wektor własny drugi co do wielkości
+# ============================================================
