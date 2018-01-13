@@ -35,3 +35,5 @@ showPlot(0)
 for a in range(np.size(x)):
     result += l(x, a) * y[a]
     showPlot(a + 1)
+
+print(result)
