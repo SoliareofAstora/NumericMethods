@@ -22,7 +22,7 @@ def showPlot(index):
     xp = np.linspace(-1, 2, 100)
     _ = plt.plot(xp, result(xp), x, y, ".", )
     plt.ylim(-5, 3)
-    plt.savefig('LangrangePlot_' + str(index) + '.png')
+    #plt.savefig('LangrangePlot_' + str(index) + '.png')
     plt.show()
 
 

@@ -12,23 +12,23 @@ def fpp(x):
 
 
 def arrayf(x):
-    y = np.array([])
-    for i in x:
-        y = np.append(y, f(i))
+    y = np.zeros([x.size])
+    for i in range(x.size):
+        y[i] = f(x[i])
     return y
 
 
 def arrayfpp(x):
-    y = np.array([])
-    for i in x:
-        y = np.append(y, fpp(i))
+    y = np.zeros([x.size])
+    for i in range(x.size):
+        y[i] = fpp(x[i])
     return y
 
 
 def xn(N):
-    x = np.array([])
+    x = np.zeros([2 * N + 1])
     for n in range(0, 2 * N + 1):
-        x = np.append(x, n / N - 1)
+        x[n] = n / N - 1
     return x
 
 
@@ -40,36 +40,53 @@ def yj(i):
     c = (a ** 3 - a) * (xdim[i + 1] - xdim[i]) / 6
     d = (b ** 3 - b) * (xdim[i + 1] - xdim[i]) / 6
     output = a * ydim[i] + b * ydim[i + 1] + c * yppdim[i] + d * yppdim[i + 1]
-    return output
+    ppoutput = a*yppdim[i]+b*yppdim[i+1]
+    return output, ppoutput
 
 
 N = [2, 5, 32]
 
 for n in range(0, 3):
+    # n=0
     xdim = np.array([])
     ydim = np.array([])
     yppdim = np.array([])
 
-    xdim = np.append(xdim, xn(N[n]))
-    ydim = np.append(ydim, arrayf(xdim))
-    yppdim = np.append(yppdim, arrayfpp(xdim))
+    #Table preparation
+    xdim = xn(N[n])
+    ydim = arrayf(xdim)
+    yppdim = arrayfpp(xdim)
 
-    yjdim = np.array([])
+    yjdim = np.empty((xdim.size-1),dtype=np.poly1d)#Functions
+    yjppdim = np.empty((xdim.size-1),dtype=np.poly1d)#PFunctions
     for xi in range(xdim.size - 1):
-        yjdim = np.append(yjdim, yj(xi))
+        yjdim[xi],yjppdim[xi] = yj(xi)
 
-    source = np.zeros([xdim.size-2, xdim.size-2])
+    a = np.zeros([xdim.size-2, xdim.size-2])
     for x in range(xdim.size-2):
-        source[x, x] = 4
+        a[x, x] = 4
         if x > 0:
-            source[x - 1, x] = 1
-            source[x, x - 1] = 1
+            a[x - 1, x] = 1
+            a[x, x - 1] = 1
+
+    vector = np.zeros([xdim.size-2])
+    for i in range (xdim.size-2):
+        vector[i]=(ydim[i]-2*(ydim[i+1])+ydim[i+2])*(6/pow(xdim[1] - xdim[0],2))
+
+    out = np.linalg.solve(a,vector)
+
+    # for i in range(1,xdim.size-3):
+        # yjdim[i-1][4] = (out[i]-out[i-1])
+        # yjdim[i][4] = (out[i+1] - out[i])
+
 
     xp = np.linspace(-1, 1, 1000)
     _ = plt.plot(xp, arrayf(xp), xdim, ydim, ".", alpha=0.3)
+    _ = plt.plot(xp, xp*0,alpha=0.1)
     for xi in range(0, xdim.size - 1):
         xp = np.linspace(xdim[xi], xdim[xi + 1], 100)
-        temp = yj(xi)
-        _ = plt.plot(xp, temp(xp), alpha=0.5)
+        _ = plt.plot(xp, yjdim[xi](xp), alpha=0.5)
+        _ = plt.plot(xp, yjdim[xi].deriv(1)(xp), alpha=0.5)
+        # _ = plt.plot(xp, yjdim[xi].deriv(2)(xp), alpha=0.5)
 
     plt.show()
