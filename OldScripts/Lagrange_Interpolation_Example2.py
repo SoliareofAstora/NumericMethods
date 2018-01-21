@@ -37,9 +37,12 @@ def xn(N):
     return x
 
 
-N = np.zeros(23,dtype=int)
-for i in range(N.size):
-    N[i]=i
+N = np.zeros(16,dtype=int)
+for i in range(0,N.size-3):
+    N[i]=i+10
+N[15]=32
+N[14]=2
+N[13]=5
 
 xcheck = np.array([])
 ycheck = np.array([])
@@ -61,10 +64,17 @@ for n in range(0, N.size):
     xp = np.linspace(-1, 1, 1000)
     _ = plt.plot(xp,arrayf(xp),xp,result(xp))
     _ = plt.plot(x,y,".",alpha=0.3)
-    plt.show()
+    plt.ylim(-0.1,1.2)
+
+
+
 
     check = 0
     for i in range(xcheck.size):
         check += pow(result(xcheck[i])-ycheck[i],2)
 
-    print(check)
+    print(str(N[n])+" " + str(check))
+
+    plt.title("nodes: "+str(N[n])+" Error: "+str(check) )
+    plt.savefig('plots/Lagrange_N=' + str(N[n]) + '.png')
+    plt.show()

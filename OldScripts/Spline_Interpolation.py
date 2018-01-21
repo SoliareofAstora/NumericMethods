@@ -22,7 +22,7 @@ def xn(N):
     return x
 
 
-N = np.array([2,3,4, 5, 32])
+N = np.array([2,3,4, 5, 32, 100])
 xcheck = np.array([])
 ycheck = np.array([])
 xcheck = xn(500)
@@ -42,11 +42,15 @@ for n in range(0, N.size):
     xp = np.linspace(-1, 1, 1000)
     _ = plt.plot(xp,arrayf(xp),xp,splines(xp))
     _ = plt.plot(xs,ys,".",alpha=0.3)
-    plt.show()
+    plt.ylim(-0.1,1.2)
+
+
 
     check = 0
     for i in range(xcheck.size):
         check += pow (splines(xcheck[i])-ycheck[i],2)
 
-    print(check)
-
+    print(str(N[n])+" " + str(check))
+    plt.title("nodes: " + str(N[n]) + " Error: " + str(check))
+    plt.savefig('plots/SplineInterpolation_N=' + str(N[n]) + '.png')
+    plt.show()
