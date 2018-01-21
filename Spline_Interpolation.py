@@ -1,27 +1,17 @@
-from math import pi, cosh, sinh
+from math import pi, cosh
 import numpy as np
 import matplotlib.pyplot as plt
+from scipy.interpolate import CubicSpline
 
 
 def f(x):
     return 1 / cosh(pi * x)
 
 
-def fpp(x):
-    return pow(pi, 2) * (2 * pow(sinh(pi * x), 2) - pow(cosh(pi * x), 2)) / pow(cosh(x * pi), 3)
-
-
 def arrayf(x):
     y = np.zeros([x.size])
     for i in range(x.size):
         y[i] = f(x[i])
-    return y
-
-
-def arrayfpp(x):
-    y = np.zeros([x.size])
-    for i in range(x.size):
-        y[i] = fpp(x[i])
     return y
 
 
@@ -32,61 +22,31 @@ def xn(N):
     return x
 
 
-def yj(i):
-    a = np.poly1d([-1, xdim[i + 1]])
-    a /= xdim[i + 1] - xdim[i]
-    b = np.poly1d([1, -xdim[i]])
-    b /= xdim[i + 1] - xdim[i]
-    c = (a ** 3 - a) * (xdim[i + 1] - xdim[i]) / 6
-    d = (b ** 3 - b) * (xdim[i + 1] - xdim[i]) / 6
-    output = a * ydim[i] + b * ydim[i + 1] + c * yppdim[i] + d * yppdim[i + 1]
-    ppoutput = a*yppdim[i]+b*yppdim[i+1]
-    return output, ppoutput
+N = np.array([2,3,4, 5, 32])
+xcheck = np.array([])
+ycheck = np.array([])
+xcheck = xn(500)
+ycheck = arrayf(xcheck)
 
+for n in range(0, N.size):
 
-N = [2, 5, 32]
-
-for n in range(0, 3):
-    # n=0
-    xdim = np.array([])
-    ydim = np.array([])
-    yppdim = np.array([])
+    xs = np.array([])
+    ys = np.array([])
 
     #Table preparation
-    xdim = xn(N[n])
-    ydim = arrayf(xdim)
-    yppdim = arrayfpp(xdim)
+    xs = xn(N[n])
+    ys = arrayf(xs)
 
-    yjdim = np.empty((xdim.size-1),dtype=np.poly1d)#Functions
-    yjppdim = np.empty((xdim.size-1),dtype=np.poly1d)#PFunctions
-    for xi in range(xdim.size - 1):
-        yjdim[xi],yjppdim[xi] = yj(xi)
-
-    a = np.zeros([xdim.size-2, xdim.size-2])
-    for x in range(xdim.size-2):
-        a[x, x] = 4
-        if x > 0:
-            a[x - 1, x] = 1
-            a[x, x - 1] = 1
-
-    vector = np.zeros([xdim.size-2])
-    for i in range (xdim.size-2):
-        vector[i]=(ydim[i]-2*(ydim[i+1])+ydim[i+2])*(6/pow(xdim[1] - xdim[0],2))
-
-    out = np.linalg.solve(a,vector)
-
-    # for i in range(1,xdim.size-3):
-        # yjdim[i-1][4] = (out[i]-out[i-1])
-        # yjdim[i][4] = (out[i+1] - out[i])
-
+    splines = CubicSpline(xs,ys)
 
     xp = np.linspace(-1, 1, 1000)
-    _ = plt.plot(xp, arrayf(xp), xdim, ydim, ".", alpha=0.3)
-    _ = plt.plot(xp, xp*0,alpha=0.1)
-    for xi in range(0, xdim.size - 1):
-        xp = np.linspace(xdim[xi], xdim[xi + 1], 100)
-        _ = plt.plot(xp, yjdim[xi](xp), alpha=0.5)
-        _ = plt.plot(xp, yjdim[xi].deriv(1)(xp), alpha=0.5)
-        # _ = plt.plot(xp, yjdim[xi].deriv(2)(xp), alpha=0.5)
-
+    _ = plt.plot(xp,arrayf(xp),xp,splines(xp))
+    _ = plt.plot(xs,ys,".",alpha=0.3)
     plt.show()
+
+    check = 0
+    for i in range(xcheck.size):
+        check += pow (splines(xcheck[i])-ycheck[i],2)
+
+    print(check)
+

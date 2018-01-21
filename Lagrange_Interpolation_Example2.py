@@ -30,15 +30,6 @@ def l(arrx, index):
     return poly / divider
 
 
-def showPlot(index):
-    xp = np.linspace(-1, 1, 100)
-    _ = plt.plot(xp, arrayf(xp), alpha=0.3)
-    _ = plt.plot(xp, result(xp), x, y, ".", )
-    plt.ylim(-0.2, 1.2)
-    # plt.savefig('LangrangePlot_' + str(index) + '.png')
-    plt.show()
-
-
 def xn(N):
     x = np.zeros([2 * N + 1])
     for n in range(0, 2 * N + 1):
@@ -46,18 +37,34 @@ def xn(N):
     return x
 
 
-N = [2, 5, 10, 15, 20, 32]
+N = np.zeros(23,dtype=int)
+for i in range(N.size):
+    N[i]=i
 
-for n in range(0, N.__len__()):
+xcheck = np.array([])
+ycheck = np.array([])
+xcheck = xn(500)
+ycheck = arrayf(xcheck)
+
+for n in range(0, N.size):
     x = np.array([])
     y = np.array([])
     # Table preparation
     x = xn(N[n])
     y = arrayf(x)
 
+
     result = np.poly1d(0)
     for a in range(np.size(x)):
         result += l(x, a) * y[a]
-        showPlot(a + 1)
 
+    xp = np.linspace(-1, 1, 1000)
+    _ = plt.plot(xp,arrayf(xp),xp,result(xp))
+    _ = plt.plot(x,y,".",alpha=0.3)
+    plt.show()
 
+    check = 0
+    for i in range(xcheck.size):
+        check += pow(result(xcheck[i])-ycheck[i],2)
+
+    print(check)
