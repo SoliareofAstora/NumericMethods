@@ -2,7 +2,7 @@ from math import sin
 import numpy as np
 import matplotlib.pyplot as plt
 import random as rand
-from scipy.interpolate import CubicSpline
+from scipy.interpolate import CubicSpline, interp1d
 
 
 # (Obowiązkowe) Dane jest równanie
@@ -45,34 +45,50 @@ def sortY(array):
 
 epsilon = pow(10, -8)
 iterator=0
+ItsOK=False
 while True:
+
     iterator+=1
+    ItsOK = True
     xystart = np.zeros((2, 3))
     for i in range(0, 3):
         xystart[0, i] = rand.uniform(0, 1)
         xystart[1, i] = f(xystart[0, i])
 
+    # odwrotna interpolacja
     interxy = np.copy(xystart)
     interCounter = 0
     while True:
         interCounter+=1
         interxy = sortY(interxy)
-
         try:
             cubic = CubicSpline(interxy[1], interxy[0])
         except ValueError:
             iterator -= 1
+            ItsOK=False
             break
-
         tmp = cubic(0)
         interxy = np.append(interxy,np.array([[tmp], [f(tmp)]]), axis=1)
 
         if -epsilon < f(tmp) < epsilon:
-            print(interCounter,tmp, f(tmp))
+            break
+
+    sieczxy = sortX(xystart[:, (0, 1)])
+    if ItsOK:
+        #metoda secznych
+
+        sieczna = np.poly1d( np.polyfit(sieczxy[0],sieczxy[1],1))
+
+
+
+        if -epsilon < f(tmp) < epsilon:
             break
 
 
+
+
     if iterator>=20:
+        print(interCounter, tmp, f(tmp))
         break
 
 
