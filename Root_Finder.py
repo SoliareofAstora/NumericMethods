@@ -44,11 +44,11 @@ def sortY(array):
 
 
 epsilon = pow(10, -8)
-iterator=0
-ItsOK=False
+iterator = 0
+ItsOK = False
 while True:
 
-    iterator+=1
+    iterator += 1
     ItsOK = True
     xystart = np.zeros((2, 3))
     for i in range(0, 3):
@@ -59,38 +59,47 @@ while True:
     interxy = np.copy(xystart)
     interCounter = 0
     while True:
-        interCounter+=1
+        interCounter += 1
         interxy = sortY(interxy)
         try:
             cubic = CubicSpline(interxy[1], interxy[0])
         except ValueError:
             iterator -= 1
-            ItsOK=False
+            ItsOK = False
             break
         tmp = cubic(0)
-        interxy = np.append(interxy,np.array([[tmp], [f(tmp)]]), axis=1)
+        interxy = np.append(interxy, np.array([[tmp], [f(tmp)]]), axis=1)
 
-        if -epsilon < f(tmp) < epsilon:
+        if f(tmp-epsilon/2)*f(tmp+epsilon/2)<0:
             break
 
-    sieczxy = sortX(xystart[:, (0, 1)])
     if ItsOK:
-        #metoda secznych
+        # metoda secznych
+        sieczxy = sortX(xystart[:, (0, 1)])
+        iter = 0
+        while True:
+            sieczna = np.poly1d(np.polyfit(sieczxy[0,iter:iter+2], sieczxy[1,iter:iter+2], 1))
+            temp = sieczna(0)
+            sieczxy = np.append(sieczxy, np.array([[temp], [f(temp)]]), axis=1)
+            iter+=1
 
-        sieczna = np.poly1d( np.polyfit(sieczxy[0],sieczxy[1],1))
-
-
-
-        if -epsilon < f(tmp) < epsilon:
-            break
-
-
-
-
-    if iterator>=20:
+            if f(temp-epsilon/2)*f(temp+epsilon/2)<0:
+                break
+    if ItsOK:
+        print()
         print(interCounter, tmp, f(tmp))
-        break
+        print(iter, temp, f(temp))
+        xp = np.linspace(-0.01,1.01,10000)
+        plt.plot(xp, arrayf(xp))
+        plt.plot(xystart[0], xystart[1], "+", label="punkty Startowe")
+        plt.plot(interxy[0], interxy[1], "." ,alpha=0.5,label="odwrotna Innterpolacja")
+        plt.plot(sieczxy[0], sieczxy[1], ".",alpha=0.5, label = "Metoda siecznych")
+        plt.legend()
+        plt.show()
 
+
+    if iterator >= 4:
+        break
 
         # xp = np.linspace(-1.01, 1.01, 1000)
         # plt.plot(xp, arrayf(xp))
