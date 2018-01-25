@@ -1,7 +1,7 @@
 import numpy as np
 from math import *
 import matplotlib.pyplot as plt
-from scipy.integrate import romberg, quadrature
+from scipy.integrate import romberg, quadrature,cumtrapz, simps, romb
 
 
 def f(x):
@@ -15,55 +15,29 @@ def arrayf(x):
     return y
 
 
-def trapezint(f, a, b, n):
-    h = (b - a) / n
-    sum = 0
-    part1 = (0.5) * h * (f(a) + f(b))
-    for i in range(1, n):
-        xi = a + i * h
-        sum = sum + f(xi)
-    return part1 + h * sum
-
-
-def adaptivetrap(f, a, b, ep):
-    max = 0
-    step = float(abs(a - b) / 1000)
-    i = 0
-    while (i < 1000):
-        i = i + 1
-        adj = a;
-        adj = a + step * i;
-        dval = diff2(f, adj)
-        if (abs(dval) > max):
-            max = abs(dval)
-
-    h = sqrt(12 * ep) * ((b - a) * max) ** .5
-    n = (b - a) / h
-    return trapezint(f, a, b, int(ceil(n)))
-
-
-print
-adaptivetrap(f1, 0.0, 10.0, 1E-5)
-
 xp = np.linspace(-5, 5, 1000)
-_ = plt.plot(xp,arrayf(xp))
-plt.show()
+# _ = plt.plot(xp,arrayf(xp))
 
-f(10)
+
+f(1030)
 
 funct = lambda x:f(x)
 arrfunct = lambda x:arrayf(x)
-for i in range(1,10):
-    xs = np.linspace(-(10**i), 10**i, 10023)
-    ys = arrayf(xs)
+for i in range(1,15):
+    step = 10**i
+    # xs = np.linspace(-step, step, step**2)
+    # ys = arrayf(xs)
 
-    print (10**i)
-    print ("trapz " + str(np.trapz(ys,xs)))
+    print ("10^"+str(i))
+    # print ("trapz " + str(np.trapz(ys,xs)))
+    # print(" cumtrapz " + str(cumtrapz(ys, xs)))
     print ("quadrature "+str(
-        quadrature(arrfunct,-(10**i),10**i)
+        quadrature(arrfunct,-step,step)
     ))
-    print ("romberg " + str(romberg(funct,-(10**i),10**i)))
+    print ("romberg " + str(romberg(funct,-step,step,tol=1e-8,divmax=40)))
 
 
-dlalex=89+102+61
-dlalex/2
+    # plt.plot(xs,ys,".")
+    # plt.xlim(-4,4)
+    # plt.show()
+

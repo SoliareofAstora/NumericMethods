@@ -1,0 +1,6 @@
+
+metoda odwrotnej interpolacji jest szybsza od metody siecznych w szukaniu miejsca zerowego. Zdarza siê ¿e jest na odwrót w przypadku kiedy zbiega do zera w momencie gdy metoda siecznych zbiega do x=1, gdzie pochodna jest du¿o wiêksza ni¿ w okolicach x=0
+
+Metoda siecznych polega na tworzeniu linii zawieraj¹cej 2 wybrane punkty. nastêpnie z powsta³ego równania ax+b wyliczamy miejsce zerowe wstawiaj¹c x=-b/a. Jeœli nie jest to miejsce zerowe, zastêpujemy jeden z punktów które poprzednio by³y brane pod uwagê w obliczeniach i powtarzamy procedurê a¿ do znalezienia miejsca zerowego.
+
+Metoda odwrotnej interpolacji polega na obliczeniu wielomianu interpolacyjnego na odwróconej tabelce punktów. Funkcja któr¹ w ten sposób interpolujemy jest funkcj¹ odwrotn¹. Wstawiaj¹c do tej funkcji 0 obliczamy jaki x odpowiada takiej wartoœci funkcji. jeœli nie jest to miejsce zerowe to dodajemy ten punkt do tabelki i powtarzamy procedurê. 
