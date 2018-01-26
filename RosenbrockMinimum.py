@@ -51,7 +51,7 @@ for i in range(20):
 
     plt.pcolor(X, Y, Z, norm=LogNorm(10))
 
-    plt.plot(history[1::2], history[0::2])#,# color="red")
+    plt.plot(history[1::2], history[0::2],color="red")
     plt.plot(history[1], history[0], ".")
     plt.title(str(a) + " steps  Momentum f(x) = " + str(f(xy[0], xy[1])))
     print(str(f(xy[0], xy[1])))
