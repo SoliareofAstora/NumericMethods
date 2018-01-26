@@ -1,11 +1,11 @@
 import numpy as np
 from math import *
 import matplotlib.pyplot as plt
-from scipy.integrate import romberg, quadrature,cumtrapz, simps, romb
+from scipy.integrate import romberg, trapz
 
 
 def f(x):
-    return sin(x*(x+1))*pow(e,-pow(x,2))
+    return sin(x * (x + 1)) * pow(e, -pow(x, 2))
 
 
 def arrayf(x):
@@ -15,29 +15,22 @@ def arrayf(x):
     return y
 
 
-xp = np.linspace(-5, 5, 1000)
-# _ = plt.plot(xp,arrayf(xp))
+epsilon = 1e-8
 
+Range = 0
 
-f(1030)
+while True:
+    Range += 1
+    value = pow(e, -pow(Range, 2))
+    if value < epsilon:
+        Range -= 1
+        break
 
-funct = lambda x:f(x)
-arrfunct = lambda x:arrayf(x)
-for i in range(1,15):
-    step = 10**i
-    # xs = np.linspace(-step, step, step**2)
-    # ys = arrayf(xs)
+xp = np.linspace(-Range, Range, 100000)
+yp = arrayf(xp)
+plt.plot(xp, yp)
 
-    print ("10^"+str(i))
-    # print ("trapz " + str(np.trapz(ys,xs)))
-    # print(" cumtrapz " + str(cumtrapz(ys, xs)))
-    print ("quadrature "+str(
-        quadrature(arrfunct,-step,step)
-    ))
-    print ("romberg " + str(romberg(funct,-step,step,tol=1e-8,divmax=40)))
+print("trapz " + str(trapz(yp, xp)))
+print("romberg " + str(romberg(lambda x: f(x), -Range, Range, tol=epsilon)))
 
-
-    # plt.plot(xs,ys,".")
-    # plt.xlim(-4,4)
-    # plt.show()
-
+plt.show()

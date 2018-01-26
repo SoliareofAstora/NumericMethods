@@ -1,0 +1,3 @@
+Metoda romberga polega na próbie eliminowaniu b³êdu wynikaj¹cego z metody trapezów oraz na dalszym ekstrapolowaniu wartoœci ca³ki.
+
+elementy w pierwszej kolumnie s¹ kolejnymi przybli¿eniami wartoœci ca³ki metod¹ trapezów na coraz bardziej zagêszczonym podziale. Kolejne elementy macie¿y trójk¹tnej dolnej obliczane s¹ za pomoc¹ specjalnego wzoru wykorzystuj¹cego uprzednio obliczone wartoœci. 
